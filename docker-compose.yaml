@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16
+    container_name: Postgres_lib_API
+    environment:
+      POSTGRES_USER: tanaka
+      POSTGRES_PASSWORD: 3116
+      POSTGRES_DB: library_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - library-network
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: library_pgadmin
+    environment:
+      PGADMIN_DEFAULT_EMAIL: tnk@mail.com
+      PGADMIN_DEFAULT_PASSWORD: 3116
+    ports:
+      - "15432:80"
+    depends_on:
+      - postgres
+    networks:
+      - library-network
+
+volumes:
+  pgdata:
+    driver: local
+
+networks:
+  library-network:
+    driver: bridge
